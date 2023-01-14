@@ -1,0 +1,67 @@
+from fuzzywuzzy import fuzz
+import json
+import pandas as pd
+import array
+from pandas import DataFrame
+'''
+
+ elif (fuzz.partial_ratio(name2,name1  )) >=90:
+
+            mylist.append(
+                {
+                    'id2': id2,
+                    'name2': name2,
+                    'id1': id1,
+                    'name1': name1,
+                    'percent': '90%'
+                }
+            )
+
+'''
+f = open('result2.json')
+datas2 = json.load(f)
+
+f = open('products.json')
+datas1 = json.load(f)
+
+df1 = pd.DataFrame(datas1, columns=['product_id','name'])
+df2 = pd.DataFrame(datas2, columns=['id','den'])
+#df = pd.DataFrame()
+
+mylist = []
+mylist2 = []
+print(df1)
+
+for data2 in df2.index:
+    id2 = (df2['id'][data2])
+    name2 = (df2['den'][data2])
+
+    for data1 in df1.index:
+
+        id1 = (df1['product_id'][data1])
+        name1 = (df1['name'][data1])
+            # print(data1,data2)
+
+
+        if (fuzz.token_sort_ratio(name2,name1  )) >=95:
+            txt90 = "90%"
+            found80 = ('with id', id2,'found', name2, 'in id',id1,name1)
+            mylist.append(
+                {
+                    'id2': id2,
+                    'name2': name2,
+                    'id1': id1,
+                    'name1': name1,
+                    'percent': '95%'
+                }
+            )
+
+
+
+        else:
+            xg = ('not found')
+
+
+    res = pd.DataFrame(mylist)
+    print(res)
+    res.to_csv('out.csv',index=False)
